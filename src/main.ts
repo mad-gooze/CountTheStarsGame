@@ -12,6 +12,7 @@ import StarsHolder from './controls/StarsHolder';
 
 import sounds from './sounds';
 import SoundEffects from './SoundEffects';
+import { applyStaticTranslations } from './i18n';
 
 const BACKGROUND_STARS_NUMBER_FACTOR = 0.0004;
 const HIDE_TIMEOUT = 800;
@@ -29,6 +30,8 @@ class App {
     private _menuScreenEnd: MenuScreenEnd;
 
     constructor() {
+        applyStaticTranslations();
+
         const select = (selector: string) =>
             document.querySelector<HTMLElement>(selector)!;
 

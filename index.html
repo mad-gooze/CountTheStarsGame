@@ -11,23 +11,19 @@
     <div class="menu-wrapper">
       <div class="menu">
         <div class="menu__screen menu__screen_start menu__screen_inactive">
-          <h1>Count The Stars</h1>
-          <p class="menu__text">
+          <h1 data-i18n="heading">Count The Stars</h1>
+          <p class="menu__text" data-i18n="intro">
             Count the stars by clicking them as they appear in the sky. Try to
             count as many of them as you can.
           </p>
-          <h2 class="menu__btn menu__btn_start-game">Start</h2>
+          <h2 class="menu__btn menu__btn_start-game" data-i18n="start">Start</h2>
         </div>
         <div class="menu__screen menu__screen_end-game menu__screen_inactive">
-          <h1>
-            You have counted <span class="menu__text_score">0</span> star<span
-              class="menu__text_plural"
-              >s</span
-            >
-          </h1>
+          <h1 class="menu__text_end-score">You have counted 0 stars</h1>
           <div class="menu__line">
             <h3 class="menu__btn menu__btn_retry menu__btn_center">
-              <span class="icon-arrows-cw"></span> Retry
+              <span class="icon-arrows-cw"></span>
+              <span data-i18n="retry">Retry</span>
             </h3>
           </div>
         </div>
@@ -46,11 +42,11 @@
 
     <div class="controls controls_wrap">
       <div class="control control_scores control_vertical-centered control_hidden">
-        <div class="control__text">Counted stars:&nbsp;</div>
+        <div class="control__text" data-i18n="countedStars">Counted stars:</div>
         <div class="control__count"></div>
       </div>
       <div class="control control_mistakes control_vertical-centered control_hidden">
-        <div class="control__text">Mistakes left:</div>
+        <div class="control__text" data-i18n="mistakesLeft">Mistakes left:</div>
       </div>
     </div>
     <div class="clouds"></div>
