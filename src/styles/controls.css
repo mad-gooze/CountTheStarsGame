@@ -1,0 +1,121 @@
+.controls {
+    display: flex;
+    justify-content: space-between;
+}
+
+.controls_wrap {
+    flex-wrap: wrap;
+}
+
+.control {
+    will-change: opacity;
+    transition: opacity 0.8s;
+    padding: 10px;
+}
+
+.control_hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.control_vertical-centered {
+    display: flex;
+    align-items: center;
+}
+
+@keyframes blink-opacity {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+.control_star {
+    display: inline-block;
+    background: radial-gradient(
+        ellipse at center,
+        #ffc8c8 0%,
+        #e1e1e1 50%,
+        #ffffc8 100%
+    );
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    box-shadow: 0 0 15px rgba(255, 255, 200, 0.9);
+    padding: 0;
+    will-change: opacity;
+    transition: opacity 0.8s;
+    position: absolute;
+    cursor: pointer;
+    transform: translate(-50%, -50%);
+}
+
+.control_blinking {
+    animation: blink-opacity 0.3s;
+    transition: none;
+}
+
+.control__text {
+    display: inline-block;
+    white-space: nowrap;
+    margin-right: 10px;
+    font-size: 0.9em;
+}
+
+.control__text:last-of-type {
+    margin-right: 0;
+}
+
+.control__text_song-name {
+    white-space: normal;
+    height: 1em;
+    line-height: 1;
+    pointer-events: none;
+}
+
+.control__count {
+    display: inline-block;
+    white-space: nowrap;
+    font-size: 0.9em;
+    margin-right: 0;
+    margin-left: -10px;
+    font-weight: bold;
+}
+
+.control__btn {
+    display: inline-block;
+    white-space: nowrap;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.control__btn:last-of-type {
+    margin-right: 0;
+}
+
+.control__star-icon {
+    display: inline-block;
+    white-space: nowrap;
+    margin-right: 10px;
+    background: radial-gradient(
+        ellipse at center,
+        #ffc8c8 0%,
+        #e1e1e1 50%,
+        #ffffc8 100%
+    );
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    box-shadow: 0 0 15px rgba(255, 255, 200, 0.9);
+    padding: 0;
+    will-change: opacity;
+    transition: opacity 0.8s;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.control__star-icon:last-of-type {
+    margin-right: 0;
+}
