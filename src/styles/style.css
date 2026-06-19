@@ -1,5 +1,6 @@
 @import './controls.css';
 @import './menu.css';
+@import './icons.css';
 
 * {
     color: white;

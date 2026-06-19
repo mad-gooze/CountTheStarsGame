@@ -10,6 +10,7 @@ export default class SoundEffects {
     private _mute = false;
     private _lastEffectNumbers: Record<string, number> = {};
     private _players: Record<number, HTMLAudioElement> = {};
+    private _nextPlayerId = 0;
     private _musicPlayer: HTMLAudioElement;
     private _prevTrackNumber = -1;
     private _started = false;
@@ -58,7 +59,7 @@ export default class SoundEffects {
         if (this._mute) {
             return;
         }
-        const id = Date.now();
+        const id = this._nextPlayerId++;
         const player = new Audio();
         this._players[id] = player;
         player.src = this._sounds.path + url;
