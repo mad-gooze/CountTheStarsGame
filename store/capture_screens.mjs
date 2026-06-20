@@ -30,9 +30,13 @@ const BASE = process.env.BASE || `http://localhost:${PREVIEW_PORT}`;
 const DEBUG_PORT = 9335;
 
 const LANGS = ['ru', 'en', 'tr'];
+// The game uses fixed (em-based) font sizes, so on a huge logical viewport the
+// text looks tiny. We keep the logical (CSS) viewport small so the UI fills the
+// frame, and use deviceScaleFactor to render crisply up to the final pixel size
+// (width*scale x height*scale).
 const PLATFORMS = {
-    desktop: { width: 1920, height: 1080, mobile: false },
-    mobile: { width: 1080, height: 1920, mobile: true },
+    desktop: { width: 960, height: 540, scale: 2, mobile: false }, // -> 1920x1080
+    mobile: { width: 540, height: 960, scale: 2, mobile: true }, //   -> 1080x1920
 };
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -142,11 +146,11 @@ function connect(url) {
 }
 
 async function captureSet(cdp, lang, platform, dims) {
-    const { width, height, mobile } = dims;
+    const { width, height, scale, mobile } = dims;
     await cdp.send('Emulation.setDeviceMetricsOverride', {
         width,
         height,
-        deviceScaleFactor: 1,
+        deviceScaleFactor: scale,
         mobile,
     });
 
@@ -163,7 +167,8 @@ async function captureSet(cdp, lang, platform, dims) {
     );
     await sleep(400);
 
-    const shot = (n) => snap(cdp, `screen_${lang}_${platform}_${n}.png`, width, height);
+    const shot = (n) =>
+        snap(cdp, `screen_${lang}_${platform}_${n}.png`, width * scale, height * scale);
 
     // 1) Menu.
     await shot('1_menu');
@@ -195,14 +200,11 @@ async function captureSet(cdp, lang, platform, dims) {
     await shot('3_over');
 }
 
-async function snap(cdp, name, width, height) {
-    const o = await cdp.send('Page.captureScreenshot', {
-        format: 'png',
-        clip: { x: 0, y: 0, width, height, scale: 1 },
-        captureBeyondViewport: true,
-    });
+async function snap(cdp, name, outWidth, outHeight) {
+    // Capture the emulated viewport; its pixel size is logical size * scale.
+    const o = await cdp.send('Page.captureScreenshot', { format: 'png' });
     fs.writeFileSync(path.join(OUT_DIR, name), Buffer.from(o.result.data, 'base64'));
-    console.log(`  wrote ${name} (${width}x${height})`);
+    console.log(`  wrote ${name} (${outWidth}x${outHeight})`);
 }
 
 main().catch((err) => {
