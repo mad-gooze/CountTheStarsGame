@@ -15,3 +15,7 @@ dist/
 
 # Vite cache
 .vite/
+
+# Generated Yandex Games submission artifacts (reproducible via store/*.py)
+count-the-stars.zip
+store/*.png

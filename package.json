@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "screens": "npm run build && node --experimental-websocket store/capture_screens.mjs"
   },
   "repository": {
     "type": "git",
