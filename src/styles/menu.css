@@ -2,6 +2,10 @@
     position: absolute;
     top: 0;
     left: 0;
+    z-index: 4;
+    /* The full-screen menu overlay must never swallow clicks meant for the
+       stars or controls beneath it; only the active screen re-enables them. */
+    pointer-events: none;
 }
 
 .menu {
@@ -14,6 +18,9 @@
     will-change: opacity;
     transition: opacity 0.8s;
     width: 100%;
+    /* Re-enable interaction (the wrapper disables it); the inactive modifier
+       below turns it back off for hidden screens. */
+    pointer-events: auto;
     position: absolute;
     padding: 20px;
     box-sizing: border-box;
@@ -37,6 +44,22 @@
 
 .menu__btn {
     cursor: pointer;
+}
+
+.menu__best {
+    font-size: 1.1em;
+    opacity: 0.85;
+    margin: 0.5em 0 0;
+    min-height: 1.2em;
+}
+
+.menu__record {
+    font-size: 1.2em;
+    margin: 0.3em 0 0;
+    color: #ffffc8;
+    text-shadow: 0 0 8px rgba(255, 255, 200, 0.9);
+    /* Reserve space so the score line doesn't jump when the badge appears. */
+    visibility: hidden;
 }
 
 .menu__btn_left {

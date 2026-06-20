@@ -1,6 +1,8 @@
 /**
- * Tiny i18n layer. The active language is chosen from the `?lang` query param
- * (en | ru | tr), falling back to the browser language and then English.
+ * Tiny i18n layer. The active language is chosen from the language the Yandex
+ * Games SDK reports (set on `window` by the bootstrap before this module is
+ * imported), falling back to the `?lang` query param (en | ru | tr), then the
+ * browser language, then English.
  */
 
 export type Lang = 'en' | 'ru' | 'tr';
@@ -22,6 +24,10 @@ export interface Messages {
     mistakesLeft: string;
     /** End-screen sentence, with language-correct pluralisation. */
     endScore(score: number): string;
+    /** Best-score label, e.g. "Best: 42". */
+    best(score: number): string;
+    /** Shown on the end screen when the player beats their record. */
+    newRecord: string;
 }
 
 /** Russian plural selector (one / few / many). */
@@ -43,6 +49,8 @@ const MESSAGES: Record<Lang, Messages> = {
         countedStars: 'Counted stars: ',
         mistakesLeft: 'Mistakes left:',
         endScore: (n) => `You have counted ${n} ${n === 1 ? 'star' : 'stars'}`,
+        best: (n) => `Best: ${n}`,
+        newRecord: 'New record!',
     },
     ru: {
         title: 'Count The Stars — простая медитативная игра',
@@ -53,6 +61,8 @@ const MESSAGES: Record<Lang, Messages> = {
         countedStars: 'Сосчитано звёзд: ',
         mistakesLeft: 'Осталось ошибок:',
         endScore: (n) => `Вы насчитали ${n} ${ruPlural(n, 'звезду', 'звезды', 'звёзд')}`,
+        best: (n) => `Рекорд: ${n}`,
+        newRecord: 'Новый рекорд!',
     },
     tr: {
         title: 'Count The Stars — basit, sakinleştirici bir oyun',
@@ -64,22 +74,53 @@ const MESSAGES: Record<Lang, Messages> = {
         mistakesLeft: 'Kalan hata:',
         // Turkish does not pluralise nouns that follow a number.
         endScore: (n) => `${n} yıldız saydınız`,
+        best: (n) => `Rekor: ${n}`,
+        newRecord: 'Yeni rekor!',
     },
 };
 
 const DEFAULT_LANG: Lang = 'en';
 
-function isLang(value: string | null): value is Lang {
-    return value !== null && value in MESSAGES;
+/** Languages Yandex may report that map onto our Russian locale. */
+const RU_LIKE = ['be', 'kk', 'uk', 'uz'];
+
+declare global {
+    interface Window {
+        /** Locale code injected by the bootstrap from the Yandex SDK. */
+        __GAME_LANG__?: string;
+    }
 }
 
-/** Resolve the active language: ?lang param → browser language → English. */
+function isLang(value: string | null | undefined): value is Lang {
+    return value != null && value in MESSAGES;
+}
+
+/**
+ * Map any locale code (ours, the browser's, or one of the many Yandex reports)
+ * onto a supported language. Per the Yandex guidelines: `ru` for the
+ * Russian-adjacent locales, `en` for everything we don't translate.
+ */
+function normalizeLang(code: string | null | undefined): Lang | null {
+    if (!code) return null;
+    const short = code.slice(0, 2).toLowerCase();
+    if (isLang(short)) return short;
+    if (RU_LIKE.includes(short)) return 'ru';
+    return null;
+}
+
+/**
+ * Resolve the active language: SDK-provided language → ?lang param → browser
+ * language → English.
+ */
 export function detectLang(): Lang {
+    const fromSdk = normalizeLang(window.__GAME_LANG__);
+    if (fromSdk) return fromSdk;
+
     const param = new URLSearchParams(window.location.search).get('lang');
     if (isLang(param)) return param;
 
-    const browser = navigator.language.slice(0, 2).toLowerCase();
-    if (isLang(browser)) return browser;
+    const fromBrowser = normalizeLang(navigator.language);
+    if (fromBrowser) return fromBrowser;
 
     return DEFAULT_LANG;
 }
