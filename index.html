@@ -5,10 +5,11 @@
     <meta name="viewport" content="width=device-width, user-scalable=no" />
     <title>Count The Stars - a simple meditative game</title>
     <link rel="icon" type="image/png" href="./img/icon.png" />
-    <script type="module" crossorigin src="./assets/index-D2F_73Do.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-BZw21OWf.css">
+    <script type="module" crossorigin src="./assets/index-DAgQGTSv.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-BpcFKuYR.css">
   </head>
   <body class="game">
+    <div class="bg-stars"></div>
     <div class="menu-wrapper">
       <div class="menu">
         <div class="menu__screen menu__screen_start menu__screen_inactive">
@@ -18,9 +19,12 @@
             count as many of them as you can.
           </p>
           <h2 class="menu__btn menu__btn_start-game" data-i18n="start">Start</h2>
+          <p class="menu__best"></p>
         </div>
         <div class="menu__screen menu__screen_end-game menu__screen_inactive">
           <h1 class="menu__text_end-score">You have counted 0 stars</h1>
+          <p class="menu__record"></p>
+          <p class="menu__best"></p>
           <div class="menu__line">
             <h3 class="menu__btn menu__btn_retry menu__btn_center">
               <span class="icon-arrows-cw"></span>
