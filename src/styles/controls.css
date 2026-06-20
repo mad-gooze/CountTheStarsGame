@@ -1,6 +1,8 @@
 .controls {
     display: flex;
     justify-content: space-between;
+    position: relative;
+    z-index: 5;
 }
 
 .controls_wrap {

@@ -43,12 +43,55 @@ html,
     background: transparent url('../img/clouds.png') repeat top center;
     animation: move-clouds-back 200s linear infinite;
     pointer-events: none;
+    z-index: 2;
+}
+
+/* Persistent, non-interactive star field behind the whole game. */
+.bg-stars {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 1;
+}
+
+@keyframes bg-twinkle {
+    0%,
+    100% {
+        opacity: var(--max-opacity, 0.9);
+    }
+    50% {
+        opacity: var(--min-opacity, 0.2);
+    }
+}
+
+.bg-star {
+    position: absolute;
+    border-radius: 50%;
+    background: #fff;
+    transform: translate(-50%, -50%);
+    will-change: opacity;
+    animation: bg-twinkle linear infinite;
+}
+
+.bg-star_glow {
+    background: radial-gradient(
+        ellipse at center,
+        #ffc8c8 0%,
+        #e1e1e1 50%,
+        #ffffc8 100%
+    );
 }
 
 .stars-holder-wrapper {
     flex-grow: 1;
     padding: 0 10px;
     display: flex;
+    position: relative;
+    z-index: 3;
 }
 
 .stars-holder {
